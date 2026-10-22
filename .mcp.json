@@ -1,0 +1,32 @@
+{
+    "mcpServers": {
+        "laravel-boost": {
+            "command": "php",
+            "args": [
+                "artisan",
+                "boost:mcp"
+            ]
+        },
+        "cloudflare": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@cloudflare/mcp-server-cloudflare"
+            ],
+            "env": {
+                "CLOUDFLARE_API_TOKEN": "API_TOKEN_KAMU",
+                "CLOUDFLARE_ACCOUNT_ID": "ACCOUNT_ID_KAMU"
+            }
+        },
+        "memory": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@modelcontextprotocol/server-memory"
+            ],
+            "env": {
+                "MEMORY_FILE_PATH": "p4tk-backend/memory.json"
+            }
+        }
+    }
+}
