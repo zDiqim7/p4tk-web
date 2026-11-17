@@ -50,6 +50,41 @@ class ProductEndpointTest extends TestCase
             ->assertJsonPath('data.1.slug', 'latte');
     }
 
+    public function test_product_image_url_is_built_from_storage_base_url(): void
+    {
+        config()->set('filesystems.disks.s3.url', 'https://cdn.example.test/storage');
+
+        $product = Product::factory()->create([
+            'catalog_type' => 'product',
+            'image_path' => 'products/coffee-beans/alpine-signal.jpg',
+        ]);
+
+        $this->assertSame(
+            'https://cdn.example.test/storage/products/coffee-beans/alpine-signal.jpg',
+            $product->image_url,
+        );
+    }
+
+    public function test_products_endpoint_filters_by_catalog_type_query_parameter(): void
+    {
+        Product::factory()->create([
+            'slug' => 'ready-coffee',
+            'catalog_type' => 'menu',
+            'is_available' => true,
+        ]);
+        Product::factory()->create([
+            'slug' => 'coffee-beans',
+            'catalog_type' => 'product',
+            'is_available' => true,
+        ]);
+
+        $this->assertDatabaseHas('products', ['slug' => 'ready-coffee', 'catalog_type' => 'menu']);
+        $this->getJson(route('v1.products.index', ['type' => 'menu']))
+            ->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonPath('data.0.slug', 'ready-coffee');
+    }
+
     public function test_menu_endpoint_filters_by_category_and_uses_twelve_item_pages(): void
     {
         $category = Category::factory()->create(['slug' => 'minuman']);
