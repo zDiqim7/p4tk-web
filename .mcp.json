@@ -27,6 +27,13 @@
             "env": {
                 "MEMORY_FILE_PATH": "p4tk-backend/memory.json"
             }
+        },
+        "caveman": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "caveman-mcp"
+            ]
         }
     }
 }
