@@ -43,6 +43,11 @@ class PageController extends Controller
 
     public function explore(): View
     {
-        return view('pages.explore');
+        return view('pages.jelajah');
+    }
+
+    public function about(): View
+    {
+        return view('pages.about');
     }
 }

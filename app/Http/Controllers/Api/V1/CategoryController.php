@@ -7,10 +7,32 @@ use App\Http\Resources\Api\V1\CategoryResource;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
+    public function index(Request $request): AnonymousResourceCollection
+    {
+        $validated = $request->validate([
+            'type' => ['sometimes', Rule::in(['menu', 'product'])],
+        ]);
+
+        $categories = Category::query()
+            ->whereHas('products', function ($query) use ($validated) {
+                $query->where('is_available', true)
+                    ->when(
+                        isset($validated['type']),
+                        fn ($productQuery) => $productQuery->where('catalog_type', $validated['type']),
+                    );
+            })
+            ->orderBy('name')
+            ->get();
+
+        return CategoryResource::collection($categories);
+    }
+
     public function menu(): AnonymousResourceCollection
     {
         return $this->categoriesFor('menu');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Contracts\View\View;
 
@@ -14,6 +15,8 @@ class DashboardController extends Controller
         return view('admin.dashboard', [
             'categoryCount' => Category::count(),
             'productCount' => Product::count(),
+            'orderCount' => Order::count(),
+            'pendingOrderCount' => Order::where('status', 'pending')->count(),
         ]);
     }
 }

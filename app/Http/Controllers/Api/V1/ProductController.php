@@ -33,6 +33,7 @@ class ProductController extends Controller
             'process',
         ];
         $rules = [
+            'type' => ['sometimes', Rule::in(['menu', 'product'])],
             'category' => ['sometimes', 'nullable', 'string', 'exists:categories,slug'],
             'sort' => ['sometimes', Rule::in(['featured', 'popular', 'newest', 'price_high_low', 'price_low_high'])],
             'page' => ['sometimes', 'integer', 'min:1'],
@@ -40,10 +41,12 @@ class ProductController extends Controller
         ];
 
         foreach ($facetKeys as $facetKey) {
-            $rules[$facetKey] = ['sometimes', 'string', 'max:255'];
+            $filterKey = $facetKey === 'type' ? 'product_type' : $facetKey;
+            $rules[$filterKey] = ['sometimes', 'string', 'max:255'];
         }
 
         $validated = $request->validate($rules);
+        $catalogType = $validated['type'] ?? $catalogType;
 
         $products = Product::query()
             ->with('category')
@@ -59,8 +62,10 @@ class ProductController extends Controller
             );
 
         foreach ($facetKeys as $facetKey) {
-            if (isset($validated[$facetKey])) {
-                $products->where("catalog_attributes->{$facetKey}", $validated[$facetKey]);
+            $filterKey = $facetKey === 'type' ? 'product_type' : $facetKey;
+
+            if (isset($validated[$filterKey])) {
+                $products->where("catalog_attributes->{$facetKey}", $validated[$filterKey]);
             }
         }
 
@@ -72,6 +77,8 @@ class ProductController extends Controller
             default => $products->orderByDesc('is_featured')->orderBy('name'),
         };
 
-        return ProductResource::collection($products->paginate($validated['per_page'] ?? 12)->withQueryString());
+        $paginator = $products->paginate($validated['per_page'] ?? 12);
+
+        return ProductResource::collection($paginator->withQueryString());
     }
 }
