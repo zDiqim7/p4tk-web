@@ -4,7 +4,7 @@
       src="{{ asset('assets/img/logo/coffee-cup.png') }}"
       alt="Logo Kopisthetics"
       class="h-24 w-24 object-contain">
-    <p class="text-black text-sm">
+    <p class="text-[var(--foreground)] text-sm">
       Pabrika Tuman Ltd.
       <br>
       Menghadirkan Kopi yang berkualitas sejak 1997
@@ -13,7 +13,7 @@
     </p>
   </aside>
   <nav class="footer-social-nav mt-8 sm:mt-0" aria-label="Social media">
-    <h6 class="footer-title text-black">Social</h6>
+    <h6 class="footer-title text-[var(--foreground)]">Social</h6>
     <div>
       <a class="footer-social-link" href="#" aria-label="Twitter" title="Twitter">
         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" class="fill-current">

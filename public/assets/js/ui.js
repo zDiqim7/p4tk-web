@@ -32,6 +32,64 @@ themeToggle?.addEventListener('click', () => {
   setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark');
 });
 
+const quantityPickers = document.querySelectorAll('[data-quantity-picker]');
+
+const syncQuantityPicker = (picker, { emptyValue = false } = {}) => {
+  const input = picker.querySelector('input[type="number"]');
+
+  if (!(input instanceof HTMLInputElement)) {
+    return;
+  }
+
+  const minimum = Number(input.min) || 1;
+  const maximum = Number(input.max) || Number.MAX_SAFE_INTEGER;
+  const parsedValue = Number(input.value);
+
+  if (input.value === '' && emptyValue) {
+    input.value = String(minimum);
+  } else if (input.value !== '' && Number.isFinite(parsedValue)) {
+    input.value = String(Math.min(maximum, Math.max(minimum, parsedValue)));
+  }
+
+  picker.querySelectorAll('[data-quantity-step]').forEach((button) => {
+    if (!(button instanceof HTMLButtonElement)) {
+      return;
+    }
+
+    const step = Number(button.dataset.quantityStep);
+    const value = Number(input.value);
+    button.disabled = Number.isFinite(value)
+      && ((step < 0 && value <= minimum) || (step > 0 && value >= maximum));
+  });
+};
+
+quantityPickers.forEach((picker) => {
+  syncQuantityPicker(picker);
+
+  const input = picker.querySelector('input[type="number"]');
+
+  input?.addEventListener('input', () => syncQuantityPicker(picker));
+  input?.addEventListener('change', () => syncQuantityPicker(picker, { emptyValue: true }));
+  input?.addEventListener('blur', () => syncQuantityPicker(picker, { emptyValue: true }));
+});
+
+document.addEventListener('click', (event) => {
+  const button = event.target instanceof Element
+    ? event.target.closest('[data-quantity-step]')
+    : null;
+  const picker = button?.closest('[data-quantity-picker]');
+  const input = picker?.querySelector('input[type="number"]');
+
+  if (!(button instanceof HTMLButtonElement) || !(input instanceof HTMLInputElement)) {
+    return;
+  }
+
+  const step = Number(button.dataset.quantityStep);
+  const currentValue = Number(input.value) || Number(input.min) || 1;
+  input.value = String(currentValue + step);
+  input.dispatchEvent(new Event('input', { bubbles: true }));
+});
+
 const closeNavigation = () => {
   if (!(menuToggle instanceof HTMLButtonElement) || !navigationLinks) {
     return;

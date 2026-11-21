@@ -15,10 +15,10 @@
       </p>
 
       <div class="mt-8 flex flex-wrap gap-4">
-        <a href="#menu" class="border-2 border-black bg-[var(--accent-yellow)] px-5 py-3 font-bold shadow-[4px_4px_0_0_#000] transition-transform hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[3px_3px_0_0_#000]">
+        <a href="#menu" class="border-2 border-black bg-[var(--accent-yellow)] px-5 py-3 font-bold text-[var(--accent-yellow-foreground)] shadow-[4px_4px_0_0_#000] transition-transform hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[3px_3px_0_0_#000]">
           Jelajahi
         </a>
-        <a href="#menu" class="border-2 border-black bg-[var(--primary)] px-5 py-3 font-bold text-[var(--primary-foreground)] shadow-[4px_4px_0_0_#000] transition-transform hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[3px_3px_0_0_#000]">
+        <a href="{{ route('about') }}" class="border-2 border-black bg-[var(--primary)] px-5 py-3 font-bold text-[var(--primary-foreground)] shadow-[4px_4px_0_0_#000] transition-transform hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[3px_3px_0_0_#000]">
           Cerita Kami
         </a>
       </div>

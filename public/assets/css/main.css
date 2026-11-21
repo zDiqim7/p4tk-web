@@ -16,10 +16,11 @@
 
 .news-step-card {
   min-height: 220px;
-  border: 2px solid #000;
-  background: #fff;
+  border: 2px solid var(--border);
+  background: var(--card);
+  color: var(--foreground);
   padding: 1.25rem;
-  box-shadow: 5px 5px 0 0 #000;
+  box-shadow: 5px 5px 0 0 var(--theme-shadow);
   animation: news-step-enter 0.55s ease-out both;
 }
 
@@ -45,8 +46,9 @@
 
 .news-step-number {
   display: inline-block;
-  border: 2px solid #000;
+  border: 2px solid var(--border);
   background: var(--accent-yellow);
+  color: var(--accent-yellow-foreground);
   padding: 0.25rem 0.65rem;
   font-weight: 900;
 }
@@ -115,7 +117,7 @@
 
 .coffee-product-card {
   width: min(100%, 400px);
-  color: #111;
+  color: var(--foreground);
 }
 
 .coffee-product-image {
@@ -633,6 +635,11 @@
 }
 
 @media (max-width: 520px) {
+  .site-brand > span {
+    padding-inline: 0.5rem;
+    font-size: 0.95rem;
+  }
+
   .menu-section {
     padding: 3.5rem 1rem;
   }

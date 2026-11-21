@@ -1,6 +1,6 @@
 <!-- Section Jelajahi -->
-  <section id="jelajahi" class=" border-black bg-[var(--card)] mx-auto h-full max-w-6xl px-6 py-24 sm:px-8">
-    <div class="ms-auto grid max-w-7xl items-center gap-8 md:grid-cols-2 ">
+  <section id="jelajahi" class="w-full border-black bg-[var(--card)] py-24">
+    <div class="mx-auto grid w-full max-w-7xl items-center gap-8 px-6 sm:px-8 md:grid-cols-2">
       <img 
        src="{{ asset('assets/img/jelajahi.jpg') }}" 
        alt="Jelajahi" 
@@ -14,7 +14,7 @@
           Kami percaya kopi enak berasal dari bahan berkualitas dan dedikasi tinggi. Di sini, setiap biji kopi terbaik diproses dan disajikan secara presisi oleh barista profesional untuk menemani momen harimu.
         </p>
         <a href="{{ route('explore') }}" class="border border-2 border-[var(--accent-yellow)] bg-[var(--accent-yellow)] pb-2 px-2 py-2 font-bold
-        shadow-[5px_5px_0_0_#000] shadow text-sm text-black hover:shadow-[3px_3px_0_0_#000]">Jelajahi</a>
+        shadow-[5px_5px_0_0_#000] shadow text-sm text-[var(--accent-yellow-foreground)] hover:shadow-[3px_3px_0_0_#000]">Jelajahi</a>
       </div>
     </div>
 

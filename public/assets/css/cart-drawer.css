@@ -1,0 +1,306 @@
+.cart-drawer-trigger {
+    position: relative;
+    display: inline-flex;
+    min-height: 2.7rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.65rem;
+    border: 2px solid var(--theme-outline);
+    background: var(--card);
+    color: var(--foreground);
+    box-shadow: 3px 3px 0 var(--theme-shadow);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 800;
+}
+
+.cart-drawer-trigger svg {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+.cart-count-badge {
+    display: inline-grid;
+    min-width: 1.35rem;
+    height: 1.35rem;
+    place-items: center;
+    border: 2px solid var(--theme-outline);
+    border-radius: 0;
+    background: var(--accent-yellow);
+    color: var(--accent-yellow-foreground);
+    font-size: 0.75rem;
+    line-height: 1;
+}
+
+.cart-count-badge[hidden] {
+    display: none;
+}
+
+.cart-drawer-trigger:hover,
+.cart-drawer-trigger:focus-visible {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--theme-shadow);
+}
+
+.cart-drawer-shell[hidden] {
+    display: none;
+}
+
+.cart-drawer-shell {
+    position: fixed;
+    z-index: 100;
+    inset: 0;
+}
+
+.cart-drawer-backdrop {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: rgb(17 17 17 / 55%);
+    cursor: pointer;
+}
+
+.cart-drawer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    width: min(100%, 31rem);
+    height: 100%;
+    flex-direction: column;
+    border-left: 3px solid var(--theme-outline);
+    background: var(--background-bone);
+    box-shadow: -8px 0 0 rgb(17 17 17 / 16%);
+    padding: 1.25rem;
+    transform: translateX(100%);
+    transition: transform 220ms ease;
+}
+
+.cart-drawer-shell.is-open .cart-drawer {
+    transform: translateX(0);
+}
+
+.cart-drawer-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--theme-outline);
+}
+
+.cart-drawer-eyebrow {
+    margin: 0 0 0.25rem;
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+}
+
+.cart-drawer-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 900;
+}
+
+.cart-drawer-close {
+    width: 2.6rem;
+    height: 2.6rem;
+    border: 2px solid var(--theme-outline);
+    background: var(--accent-yellow);
+    color: var(--accent-yellow-foreground);
+    cursor: pointer;
+    font: inherit;
+    font-size: 1.6rem;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.cart-drawer-status {
+    min-height: 1.5rem;
+    margin: 0;
+    padding: 0.75rem 0;
+    font-size: 0.9rem;
+}
+
+.cart-drawer-items {
+    display: grid;
+    align-content: start;
+    gap: 0.85rem;
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.2rem 0.35rem 1rem 0;
+}
+
+.cart-drawer-item {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem;
+    border: 2px solid var(--theme-outline);
+    background: var(--card);
+    box-shadow: 3px 3px 0 var(--theme-shadow);
+}
+
+.cart-drawer-item-image,
+.cart-drawer-item-placeholder {
+    display: grid;
+    width: 4.5rem;
+    aspect-ratio: 1;
+    place-items: center;
+    border: 1px solid var(--theme-outline);
+    background: var(--background-bone);
+    object-fit: cover;
+    font-size: 1.25rem;
+    font-weight: 900;
+}
+
+.cart-drawer-item-details {
+    min-width: 0;
+}
+
+.cart-drawer-item-details h3 {
+    overflow: hidden;
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 900;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cart-drawer-item-details p {
+    margin: 0.2rem 0;
+    font-size: 0.78rem;
+}
+
+.cart-drawer-item-line-total {
+    font-size: 0.85rem;
+    font-weight: 900;
+}
+
+.cart-drawer-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.cart-drawer-item-actions button {
+    min-width: 2rem;
+    min-height: 2rem;
+    border: 2px solid var(--theme-outline);
+    background: var(--accent-yellow);
+    color: var(--accent-yellow-foreground);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 900;
+}
+
+.cart-drawer-item-actions button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+.cart-drawer-item-actions span {
+    min-width: 1.5rem;
+    text-align: center;
+    font-weight: 900;
+}
+
+.cart-drawer-item-remove {
+    grid-column: 3;
+    justify-self: end;
+    padding-inline: 0.5rem;
+    font-size: 0.75rem !important;
+}
+
+.cart-drawer-empty {
+    padding: 1.25rem;
+    border: 2px dashed var(--theme-outline);
+    background: var(--card);
+    font-weight: 700;
+}
+
+.cart-drawer-footer {
+    display: grid;
+    gap: 0.75rem;
+    padding-top: 1rem;
+    border-top: 2px solid var(--theme-outline);
+}
+
+.cart-drawer-subtotal {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 1.05rem;
+}
+
+.cart-drawer-checkout,
+.cart-drawer-view-cart {
+    display: grid;
+    min-height: 3rem;
+    place-items: center;
+    border: 2px solid var(--theme-outline);
+    color: var(--foreground);
+    font-weight: 900;
+    text-decoration: none;
+}
+
+.cart-drawer-checkout {
+    background: var(--accent-yellow);
+    color: var(--accent-yellow-foreground);
+    box-shadow: 4px 4px 0 var(--theme-shadow);
+    transition: background-color 150ms ease, color 150ms ease, transform 80ms ease, box-shadow 80ms ease;
+}
+
+.cart-drawer-checkout:hover {
+    background: #171717;
+    color: #fff;
+}
+
+.cart-drawer-checkout:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+}
+
+.cart-drawer-view-cart {
+    background: var(--card);
+}
+
+.cart-feedback:empty {
+    display: none;
+}
+
+.cart-feedback {
+    color: var(--foreground);
+    font-weight: 800;
+}
+
+body.cart-drawer-open {
+    overflow: hidden;
+}
+
+@media (max-width: 760px) {
+    .cart-drawer-trigger {
+        width: 2.7rem;
+        min-width: 2.7rem;
+        padding: 0.4rem;
+    }
+
+    .cart-drawer-trigger > span:not(.cart-count-badge) {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cart-drawer {
+        transition-duration: 0.01ms;
+    }
+}

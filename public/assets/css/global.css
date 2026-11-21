@@ -5,16 +5,16 @@
   color-scheme: light;
   --background: #d4e7fe;
   --background-bone: #f5f2eb;
-  --foreground: #000000;
+  --foreground: #070707;
   --card: #ffffff;
   --card-foreground: #000000;
-  --primary: #3b82f6;
+  --primary: #1d4ed8;
   --primary-foreground: #ffffff;
   --accent-pink: #ff70a6;
   --accent-pink-foreground: #000000;
   --accent-yellow: #facc15;
   --accent-yellow-foreground: #000000;
-  --accent-gray: #edeff3;
+  --accent-gray: #ecebe2;
   --border: #000000;
   --muted-foreground: #475569;
   --theme-outline: #000000;
@@ -47,9 +47,33 @@
 }
 
 body {
-  background-color: var(--background-bone);
+  background-color: var(--background);
   color: var(--foreground);
   transition: background-color 180ms ease, color 180ms ease;
+}
+
+.custom-select {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+.custom-select > select {
+  width: 100%;
+  appearance: none;
+  padding-right: 2.75rem;
+}
+
+.custom-select-chevron {
+  position: absolute;
+  top: 50%;
+  right: 0.85rem;
+  width: 1rem;
+  height: 1rem;
+  color: currentColor;
+  pointer-events: none;
+  transform: translateY(-50%);
 }
 
 body[data-theme="dark"] .border-black {
@@ -58,10 +82,6 @@ body[data-theme="dark"] .border-black {
 
 body[data-theme="dark"] .bg-white {
   background-color: var(--card);
-}
-
-body[data-theme="dark"] .text-black {
-  color: var(--foreground);
 }
 
 body[data-theme="dark"] .text-slate-600,

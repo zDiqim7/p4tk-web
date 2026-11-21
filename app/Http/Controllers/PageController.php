@@ -7,6 +7,27 @@ use Illuminate\Contracts\View\View;
 
 class PageController extends Controller
 {
+    public function home(): View
+    {
+        $menuItems = Product::query()
+            ->where('catalog_type', 'menu')
+            ->where('is_available', true)
+            ->orderByDesc('is_featured')
+            ->orderBy('name')
+            ->limit(4)
+            ->get();
+
+        $products = Product::query()
+            ->where('catalog_type', 'product')
+            ->where('is_available', true)
+            ->orderByDesc('is_featured')
+            ->orderBy('name')
+            ->limit(4)
+            ->get();
+
+        return view('welcome', compact('menuItems', 'products'));
+    }
+
     public function menu(): View
     {
         return view('catalog.menu');
