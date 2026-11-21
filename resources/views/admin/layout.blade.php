@@ -12,6 +12,7 @@
         <header class="admin-header">
             <a class="admin-brand" href="{{ route('admin.dashboard') }}">Kopisthetics <span>ADMIN</span></a>
             <nav aria-label="Navigasi admin">
+                <a href="{{ route('admin.orders.index') }}">Pesanan</a>
                 <a href="{{ route('admin.categories.index') }}">Kategori</a>
                 <a href="{{ route('admin.products.index') }}">Produk</a>
             </nav>

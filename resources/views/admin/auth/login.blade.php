@@ -53,11 +53,6 @@
                     @enderror
                 </div>
 
-                <label class="auth-remember">
-                    <input name="remember" type="checkbox" value="1">
-                    <span>Ingat saya</span>
-                </label>
-
                 <button class="auth-submit" type="submit">
                     Masuk
                     <span aria-hidden="true">→</span>

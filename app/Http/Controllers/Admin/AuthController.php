@@ -20,7 +20,7 @@ class AuthController extends Controller
     {
         $credentials = $request->safe()->only(['email', 'password']);
 
-        if (! Auth::attempt([...$credentials, 'is_admin' => true], $request->boolean('remember'))) {
+        if (! Auth::attempt([...$credentials, 'is_admin' => true], false)) {
             return back()
                 ->withErrors(['email' => 'Email atau password tidak valid untuk akun admin.'])
                 ->onlyInput('email');
