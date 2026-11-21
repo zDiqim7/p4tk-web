@@ -64,26 +64,15 @@
         imageLink.setAttribute('aria-label', `Lihat detail ${product.name}`);
         imageFrame.className = 'catalog-card-media';
 
-        if (product.image_path) {
-            const imageUrl = new URL(product.image_path, window.location.origin);
-
-            if (imageUrl.protocol === 'http:' || imageUrl.protocol === 'https:') {
-                const image = document.createElement('img');
-
-                image.src = imageUrl.href;
-                image.alt = product.name;
-                image.loading = 'lazy';
-                imageFrame.append(image);
-            }
-        }
-
-        if (!imageFrame.firstChild) {
-            const placeholder = document.createElement('span');
-            placeholder.className = 'catalog-card-placeholder';
-            placeholder.setAttribute('aria-hidden', 'true');
-            placeholder.textContent = 'K';
-            imageFrame.append(placeholder);
-        }
+        const image = document.createElement('img');
+        image.src = product.image_url || '/assets/img/logo/coffee-cup.png';
+        image.alt = product.name;
+        image.loading = 'lazy';
+        image.onerror = () => {
+            image.onerror = null;
+            image.src = '/assets/img/logo/coffee-cup.png';
+        };
+        imageFrame.append(image);
 
         title.className = 'catalog-card-title';
         title.textContent = product.name;
@@ -125,14 +114,29 @@
 
             const field = document.createElement('div');
             const fieldLabel = document.createElement('label');
+            const selectWrapper = document.createElement('div');
             const select = document.createElement('select');
+            const chevron = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            const chevronPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             const allOption = document.createElement('option');
 
             field.className = 'catalog-filter-field';
+            selectWrapper.className = 'custom-select';
             fieldLabel.htmlFor = `catalog-filter-${key}`;
             fieldLabel.textContent = label;
             select.id = `catalog-filter-${key}`;
-            select.dataset.facetFilter = key;
+            select.dataset.facetFilter = key === 'type' ? 'product_type' : key;
+            chevron.classList.add('custom-select-chevron');
+            chevron.setAttribute('viewBox', '0 0 16 16');
+            chevron.setAttribute('aria-hidden', 'true');
+            chevron.setAttribute('focusable', 'false');
+            chevronPath.setAttribute('d', 'm3 6 5 5 5-5');
+            chevronPath.setAttribute('fill', 'none');
+            chevronPath.setAttribute('stroke', 'currentColor');
+            chevronPath.setAttribute('stroke-width', '2.5');
+            chevronPath.setAttribute('stroke-linecap', 'square');
+            chevronPath.setAttribute('stroke-linejoin', 'miter');
+            chevron.append(chevronPath);
             allOption.value = '';
             allOption.textContent = `Semua ${label.toLowerCase()}`;
             select.append(allOption);
@@ -145,7 +149,8 @@
                 select.append(option);
             });
 
-            field.append(fieldLabel, select);
+            selectWrapper.append(select, chevron);
+            field.append(fieldLabel, selectWrapper);
             facetFields.append(field);
             select.addEventListener('change', () => loadProducts());
         });

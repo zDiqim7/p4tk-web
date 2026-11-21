@@ -1,11 +1,4 @@
 <main class="catalog-page">
-    <nav class="catalog-nav" aria-label="Navigasi halaman">
-        <a href="{{ route('home') }}">Beranda</a>
-        <a href="{{ route('menu.index') }}">Menu</a>
-        <a href="{{ route('products.index') }}">Produk</a>
-        <a href="{{ route('cart.index') }}">Keranjang</a>
-    </nav>
-
     <header class="catalog-heading">
         <span class="catalog-eyebrow">KOPISTHETICS / {{ strtoupper($kind) }}</span>
         <h1 class="catalog-title">{{ $heading }}</h1>
@@ -21,9 +14,12 @@
             </summary>
             <div class="catalog-filter-panel">
                 <label for="catalog-category">Kategori</label>
-                <select id="catalog-category" data-category-filter>
-                    <option value="">Semua kategori</option>
-                </select>
+                <div class="custom-select">
+                    <select id="catalog-category" data-category-filter>
+                        <option value="">Semua kategori</option>
+                    </select>
+                    <x-select-chevron />
+                </div>
                 <div class="catalog-facet-fields" data-facet-fields></div>
                 <button type="button" data-clear-filters>Hapus filter</button>
             </div>
@@ -32,13 +28,16 @@
         <label class="catalog-sort">
             <span aria-hidden="true">↕</span>
             <span>Sortir</span>
-            <select data-sort-filter aria-label="Urutkan katalog">
-                <option value="featured">Unggulan</option>
-                <option value="popular">Terpopuler</option>
-                <option value="newest">Terbaru</option>
-                <option value="price_high_low">Harga: tertinggi</option>
-                <option value="price_low_high">Harga: terendah</option>
-            </select>
+            <div class="custom-select">
+                <select data-sort-filter aria-label="Urutkan katalog">
+                    <option value="featured">Unggulan</option>
+                    <option value="popular">Terpopuler</option>
+                    <option value="newest">Terbaru</option>
+                    <option value="price_high_low">Harga: tertinggi</option>
+                    <option value="price_low_high">Harga: terendah</option>
+                </select>
+                <x-select-chevron />
+            </div>
         </label>
     </section>
 
