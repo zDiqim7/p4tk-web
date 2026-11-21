@@ -14,12 +14,17 @@
 /.zed
 /node
 /docs
+!/docs/
+/docs/*
+!/docs/CONTEXT.md
 /auth.json
 /node_modules
 /public/build
 /public/fonts-manifest.dev.json
 /public/hot
 /public/storage
+/public/assets/img/menu
+/public/assets/img/products
 /storage/*.key
 /storage/pail
 /vendor
@@ -27,3 +32,4 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+out.txt
