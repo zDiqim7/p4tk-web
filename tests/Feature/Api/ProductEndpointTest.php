@@ -52,17 +52,28 @@ class ProductEndpointTest extends TestCase
 
     public function test_product_image_url_is_built_from_storage_base_url(): void
     {
-        config()->set('filesystems.disks.s3.url', 'https://cdn.example.test/storage');
+        config()->set('filesystems.disks.s3.url', 'https://cdn.example.test/storage/');
 
         $product = Product::factory()->create([
             'catalog_type' => 'product',
-            'image_path' => 'products/coffee-beans/alpine-signal.jpg',
+            'image_path' => '/products/coffee-beans/alpine-signal.jpg',
         ]);
 
         $this->assertSame(
             'https://cdn.example.test/storage/products/coffee-beans/alpine-signal.jpg',
             $product->image_url,
         );
+
+        $this->getJson(route('v1.products.index'))
+            ->assertOk()
+            ->assertJsonPath('data.0.image_url', 'https://cdn.example.test/storage/products/coffee-beans/alpine-signal.jpg');
+    }
+
+    public function test_product_image_url_uses_local_placeholder_when_path_is_empty(): void
+    {
+        $product = Product::make(['image_path' => null]);
+
+        $this->assertSame(asset('assets/img/logo/coffee-cup.png'), $product->image_url);
     }
 
     public function test_products_endpoint_filters_by_catalog_type_query_parameter(): void

@@ -2,10 +2,15 @@
 
 namespace Tests\Feature;
 
+use App\Models\Category;
+use App\Models\Product;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class PublicPagesTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_catalog_pages_render_client_side_data_endpoints(): void
     {
         $this->get(route('menu.index'))
@@ -63,9 +68,50 @@ class PublicPagesTest extends TestCase
             ->assertSee('data-match-filter="roast_level"', false)
             ->assertSee('data-match-filter="acidity_level"', false)
             ->assertSee('data-match-filter="body"', false)
+            ->assertSee('data-match-sample-image', false)
+            ->assertSee('role="meter"', false)
+            ->assertSee('Ungu: roast level')
             ->assertSee('data-flavor-option="chocolate"', false)
             ->assertSee('assets/js/coffee-matcher.js', false)
             ->assertSee('assets/js/scroll-reveal.js', false);
+    }
+
+    public function test_home_lists_menu_and_products_from_their_own_catalog_types(): void
+    {
+        $category = Category::factory()->create();
+        $menu = Product::factory()->for($category)->create([
+            'name' => 'Menu Kopi Susu',
+            'slug' => 'menu-kopi-susu',
+            'catalog_type' => 'menu',
+        ]);
+        $product = Product::factory()->for($category)->create([
+            'name' => 'Biji Kopi Huila',
+            'slug' => 'biji-kopi-huila',
+            'catalog_type' => 'product',
+        ]);
+
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('Menu Kopi Susu')
+            ->assertSee('Biji Kopi Huila')
+            ->assertSee('href="'.route('menu.show', $menu->slug).'"', false)
+            ->assertSee('href="'.route('products.show', $product->slug).'"', false)
+            ->assertDontSee('Matcha Latte')
+            ->assertDontSee('Chicken Burger');
+    }
+
+    public function test_product_detail_shows_empty_rating_state_without_reviews(): void
+    {
+        $category = Category::factory()->create();
+        $product = Product::factory()->for($category)->create([
+            'catalog_type' => 'product',
+            'catalog_attributes' => [],
+        ]);
+
+        $this->get(route('products.show', $product->slug))
+            ->assertOk()
+            ->assertSee('Rating Pelanggan')
+            ->assertSee('Belum Ada Rating untuk Produk Ini');
     }
 
     public function test_legacy_explore_url_redirects_to_jelajah(): void

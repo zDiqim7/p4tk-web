@@ -43,6 +43,11 @@ class CheckoutFlowTest extends TestCase
             'delivery_address' => 'Jl. Kopi No. 1',
         ])->assertRedirect(route('cart.index'));
 
+        $this->get(route('cart.index'))
+            ->assertOk()
+            ->assertSee('cart-order-alert', false)
+            ->assertSee('berhasil dibuat');
+
         $order = Order::query()->with('items')->firstOrFail();
         $this->assertSame('pending', $order->status);
         $this->assertSame('expedited_shipping', $order->order_type);

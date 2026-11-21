@@ -7,6 +7,8 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class CatalogCrudTest extends TestCase
@@ -147,6 +149,59 @@ class CatalogCrudTest extends TestCase
         $this->assertDatabaseCount('products', 0);
     }
 
+    public function test_admin_can_upload_product_image_and_filter_catalog(): void
+    {
+        Storage::fake('s3');
+        $admin = User::factory()->admin()->create();
+        $coffee = Category::factory()->create(['name' => 'Kopi']);
+        $snack = Category::factory()->create(['name' => 'Camilan']);
+
+        $this->actingAs($admin)
+            ->post(route('admin.products.store'), [
+                'category_id' => $coffee->id,
+                'catalog_type' => 'menu',
+                'name' => 'Latte Pilihan',
+                'slug' => 'latte-pilihan',
+                'description' => 'Latte baru.',
+                'price' => '26000',
+                'is_available' => '1',
+                'is_featured' => '1',
+                'image' => UploadedFile::fake()->createWithContent(
+                    'latte.png',
+                    base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=', true),
+                ),
+            ])
+            ->assertRedirect(route('admin.products.index'));
+
+        $product = Product::query()->where('slug', 'latte-pilihan')->firstOrFail();
+        $this->assertStringStartsWith('menu/', (string) $product->image_path);
+        Storage::disk('s3')->assertExists((string) $product->image_path);
+
+        Product::factory()->for($snack)->create(['name' => 'Roti Cokelat', 'catalog_type' => 'menu']);
+
+        $this->actingAs($admin)
+            ->get(route('admin.products.index', ['search' => 'Latte', 'category' => $coffee->id]))
+            ->assertOk()
+            ->assertSee('Latte Pilihan')
+            ->assertDontSee('Roti Cokelat');
+    }
+
+    public function test_admin_can_toggle_product_availability(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $product = Product::factory()->create(['is_available' => true]);
+
+        $this->actingAs($admin)
+            ->patch(route('admin.products.availability.toggle', $product))
+            ->assertRedirect();
+
+        $this->assertFalse($product->refresh()->is_available);
+        $this->assertDatabaseHas('products', [
+            'id' => $product->id,
+            'is_available' => false,
+        ]);
+    }
+
     public function test_category_with_products_cannot_be_deleted(): void
     {
         $admin = User::factory()->admin()->create();
@@ -181,8 +236,85 @@ class CatalogCrudTest extends TestCase
             ->assertSee('assets/css/admin.css', false)
             ->assertSee('Kembali ke Kopisthetics / Home')
             ->assertSee(route('home'), false)
+            ->assertDontSee('Ingat saya')
+            ->assertDontSee('name="remember"', false)
             ->assertDontSee('Sign in with Google')
             ->assertDontSee('Not registered yet')
             ->assertDontSee('2026 DuskCoffee');
+    }
+
+    public function test_admin_login_rejects_wrong_credentials(): void
+    {
+        User::factory()->admin()->create([
+            'email' => 'admin@example.com',
+            'password' => 'password',
+        ]);
+
+        $this->from(route('admin.login'))
+            ->post(route('admin.login.store'), [
+                'email' => 'admin@example.com',
+                'password' => 'wrong-password',
+            ])
+            ->assertRedirect(route('admin.login'))
+            ->assertSessionHasErrors('email');
+
+        $this->assertGuest();
+    }
+
+    public function test_admin_login_rejects_regular_user(): void
+    {
+        User::factory()->create([
+            'email' => 'customer@example.com',
+            'password' => 'password',
+            'is_admin' => false,
+        ]);
+
+        $this->post(route('admin.login.store'), [
+            'email' => 'customer@example.com',
+            'password' => 'password',
+        ])
+            ->assertRedirect()
+            ->assertSessionHasErrors('email');
+
+        $this->assertGuest();
+    }
+
+    public function test_admin_login_rate_limit_rejects_excess_attempts(): void
+    {
+        for ($attempt = 1; $attempt <= 5; $attempt++) {
+            $this->from(route('admin.login'))
+                ->post(route('admin.login.store'), [
+                    'email' => 'admin@example.com',
+                    'password' => 'wrong-password',
+                ])
+                ->assertRedirect();
+        }
+
+        $this->post(route('admin.login.store'), [
+            'email' => 'admin@example.com',
+            'password' => 'wrong-password',
+        ])->assertTooManyRequests();
+    }
+
+    public function test_successful_admin_login_regenerates_session_id(): void
+    {
+        $admin = User::factory()->admin()->create([
+            'email' => 'admin@example.com',
+            'password' => 'password',
+        ]);
+
+        $this->get(route('admin.login'))->assertOk();
+        $sessionIdBeforeLogin = $this->app['session']->getId();
+
+        $this->post(route('admin.login.store'), [
+            'email' => 'admin@example.com',
+            'password' => 'password',
+        ])
+            ->assertRedirect(route('admin.dashboard'));
+
+        $sessionIdAfterLogin = $this->app['session']->getId();
+
+        $this->assertAuthenticatedAs($admin);
+        $this->assertNotSame($sessionIdBeforeLogin, $sessionIdAfterLogin);
     }
 }
