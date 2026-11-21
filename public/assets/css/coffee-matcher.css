@@ -23,30 +23,26 @@
   position: absolute;
   aspect-ratio: 1;
   border: 3px solid;
-  border-radius: 50%;
 }
 
 .coffee-match-promo-ring-outer {
   inset: 0;
   border-color: #d878de;
+  border-radius: 3rem;
 }
 
 .coffee-match-promo-ring-middle {
-  inset: 12%;
+  inset: 12.5%;
   border-color: #6174f8;
-}
-
-.coffee-match-promo-ring-inner {
-  inset: 24%;
-  border-color: #8acdf1;
+  border-radius: 1.75rem;
 }
 
 .coffee-match-promo-image {
   position: relative;
   z-index: 1;
-  width: 48%;
-  aspect-ratio: 4 / 5;
-  border: 2px solid var(--border);
+  width: 58%;
+  aspect-ratio: 1;
+  border: 0;
   object-fit: cover;
   object-position: center;
   box-shadow: 4px 4px 0 0 var(--theme-shadow);
