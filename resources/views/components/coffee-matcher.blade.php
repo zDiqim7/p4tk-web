@@ -20,7 +20,6 @@
             <div class="coffee-match-promo-gauge" aria-hidden="true">
                 <span class="coffee-match-promo-ring coffee-match-promo-ring-outer"></span>
                 <span class="coffee-match-promo-ring coffee-match-promo-ring-middle"></span>
-                <span class="coffee-match-promo-ring coffee-match-promo-ring-inner"></span>
                 <img
                     class="coffee-match-promo-image"
                     src="{{ asset('assets/img/main-2.jpg') }}"
