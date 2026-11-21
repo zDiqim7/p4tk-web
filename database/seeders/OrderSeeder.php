@@ -20,22 +20,22 @@ class OrderSeeder extends Seeder
         foreach ([
             [
                 'order_number' => 'ORD-SAMPLE-0001',
-                'order_type' => 'dine_in',
+                'order_type' => 'instant_pickup',
                 'payment_method' => 'cash',
                 'status' => 'completed',
-                'subtotal' => 33000,
+                'subtotal' => 108750,
                 'tax' => 0,
-                'total' => 33000,
+                'total' => 108750,
                 'notes' => null,
             ],
             [
                 'order_number' => 'ORD-SAMPLE-0002',
-                'order_type' => 'takeaway',
+                'order_type' => 'instant_delivery',
                 'payment_method' => 'transfer',
                 'status' => 'pending',
-                'subtotal' => 33000,
+                'subtotal' => 150000,
                 'tax' => 0,
-                'total' => 33000,
+                'total' => 150000,
                 'notes' => 'Tidak perlu alat makan.',
             ],
         ] as $order) {

@@ -40,26 +40,20 @@ class Product extends Model
             return $imagePath;
         }
 
-        if (str_starts_with($imagePath, '/')) {
-            $imagePath = ltrim($imagePath, '/');
+        $imagePath = ltrim($imagePath, '/');
+
+        if (str_starts_with($imagePath, 'storage/')) {
+            return asset($imagePath);
         }
 
-        $baseUrl = trim((string) (config('filesystems.disks.s3.url') ?: env('AWS_URL', config('app.url', ''))));
+        $baseUrl = trim((string) config('filesystems.disks.s3.url', ''));
 
         if ($baseUrl !== '') {
-            $baseUrlPath = parse_url($baseUrl, PHP_URL_PATH) ?: $baseUrl;
-            $baseUrlFile = pathinfo($baseUrlPath, PATHINFO_BASENAME);
-            $imageFile = pathinfo($imagePath, PATHINFO_BASENAME);
-
-            if ($baseUrlFile !== '' && $baseUrlFile === $imageFile) {
-                return $baseUrl;
-            }
-
             return rtrim($baseUrl, '/').'/'.ltrim($imagePath, '/');
         }
 
         if (str_starts_with($imagePath, 'assets/')) {
-            return asset($imagePath);
+            return asset(ltrim($imagePath, '/'));
         }
 
         if (preg_match('#^(menu|products)/#', $imagePath) === 1) {

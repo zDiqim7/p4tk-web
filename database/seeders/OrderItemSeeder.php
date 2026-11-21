@@ -15,10 +15,10 @@ class OrderItemSeeder extends Seeder
     public function run(): void
     {
         $items = [
-            ['ORD-SAMPLE-0001', 'nasi-goreng-kampung', 1, 25000],
-            ['ORD-SAMPLE-0001', 'es-teh-manis', 1, 8000],
-            ['ORD-SAMPLE-0002', 'kopi-susu-gula-aren', 1, 18000],
-            ['ORD-SAMPLE-0002', 'pisang-goreng', 1, 15000],
+            ['ORD-SAMPLE-0001', 'classic-americano', 1, 56250],
+            ['ORD-SAMPLE-0001', 'chunky-dark-chocolate-chip-cookie', 1, 52500],
+            ['ORD-SAMPLE-0002', 'velvety-cappuccino', 1, 67500],
+            ['ORD-SAMPLE-0002', 'crispy-savory-rissoles', 1, 82500],
         ];
 
         foreach ($items as [$orderNumber, $productSlug, $quantity, $price]) {

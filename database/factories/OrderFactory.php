@@ -25,9 +25,9 @@ class OrderFactory extends Factory
         return [
             'user_id' => User::factory(),
             'order_number' => 'ORD-'.Str::upper(Str::random(12)),
-            'order_type' => fake()->randomElement(['dine_in', 'takeaway', 'delivery']),
+            'order_type' => fake()->randomElement(['instant_pickup', 'instant_delivery', 'expedited_shipping']),
             'payment_method' => fake()->randomElement(['cash', 'transfer', 'card']),
-            'status' => fake()->randomElement(['pending', 'processing', 'completed', 'cancelled']),
+            'status' => fake()->randomElement(['pending', 'processing', 'ready', 'completed']),
             'subtotal' => $subtotal,
             'tax' => $tax,
             'total' => $subtotal + $tax,
