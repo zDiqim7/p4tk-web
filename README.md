@@ -3,7 +3,7 @@
 Cuma iseng bikin web kopi pake Laravel, tema neobrutalism.
 Bukan template, bukan tutorial, buat ngetes-ngetes aja.
 
-Live: https://www.tikitikihub.diskon.cloud/ (masih ada yang mencong, nanti dibenerin)
+Live: https://www.tikitikihub.diskon.cloud/ (masih ada yang mencong, gk ke render, dan segala macem, ada beberapa yg perlu di benerin dan juga masih banyak yg bisa di improve, nanti aja ah malas)
 
 Isinya: katalog menu + filter beans, keranjang, CRUD dasar.
 Login ke dashboard admin belum kelar.
